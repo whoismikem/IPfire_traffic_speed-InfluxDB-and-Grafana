@@ -178,7 +178,10 @@ class IPFireTrafficSpeed():
             print("Starting in run")
             bytes_dict =  self.get_bytes()
             if not self.first_try:
-                self.send_results(bytes_dict)
+                try:
+                    self.send_results(bytes_dict)
+                except Exception as e:
+                    print(f"Error sending results: ${e}")
                 
             self.first_try = False
 
