@@ -57,7 +57,9 @@ class IPFireTrafficSpeed():
         except (ConnectTimeout, InfluxDBClientError, ConnectionError) as e:
             if isinstance(e, ConnectTimeout):
                 log.critical('Unable to connect to InfluxDB at the provided address (%s)', config.influx_address)
-            elif e.code == 401:
+            elif isinstance(e, ConnectionError):
+                log.critical('Unable to connect to InfluxDB. Database server offline')
+            elif e.response == 401:
                 log.critical('Unable to connect to InfluxDB with provided credentials')
             else:
                 log.critical('Failed to connect to InfluxDB for unknown reason')
